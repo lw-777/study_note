@@ -1,0 +1,141 @@
+FreeRTOS
+{
+	FreeRTOS任务
+	{
+		任务特性
+		{
+			1、简单
+			2、没有使用限制
+			3、支持抢占
+			4、支持优先级
+			5、每个任务都拥有堆栈导致了RAM使用量的增大
+			6、如果使用抢占的话需要仔细考虑重入的问题
+		}
+		
+		任务状态
+		{
+			1、运行态
+			2、就绪态	//创建好的任务就处于就绪态
+			3、阻塞态	//等待特定事件的发生时，任务处于阻塞态
+			4、挂起态	//暂停运行
+		}
+		
+		任务优先级
+		{
+			0 ~ configMAX——PRIORITIES - 1
+			
+			数字越大，优先级越高！
+			同一个优先级下，可以又多个任务
+		}
+		
+		任务实现
+		{
+			任务实现即为任务的具体工作内容
+			
+			void vATaskFunction(void *pvParameters)
+			{
+				for (;;)
+				{
+					--任务应用程序--
+					vTaskDelay();
+				}
+				/*不能从任务函数中返回或者退出，从任务函数中返回或者退出
+				的话就会调用configASSERT()，前提是你定义了configASSERT()。
+				如果一定要从任务函数中退出的话，
+				那一定要调用函数vTaskDelete(NULL)来删除此任务
+				*/
+				vTaskDelete(NULL);
+			}
+		}
+		
+		任务控制块
+		{
+			一个结构体，新版本FreeRTOS中叫TCB_t
+		}
+		
+		任务堆栈
+		{
+			用来保存现场，创建任务的时候需要指定任务堆栈
+			数据类型：
+				StackType_t
+				
+			该变量类型如下
+			{
+				#define portStack_TYPE	uint32_t
+				#define portBASE_TYPE	long
+				typedef portStack_TYPE	StackType_t;
+			}
+		}
+		
+		任务的创建与删除(动态方法)
+		{
+			本质：
+				调用FreeRTOS的API函数
+				
+			API函数
+			{
+				xTaskCreate(	TaskFunction_t			pxTaskCode,		//任务函数
+								const char * const 		pcName,			//任务名称
+								const uint16_t 			usStackDepth,	//任务堆栈大小
+								void * const 			pvParameters,	//传递给任务函数的参数
+								UBaseType_t 			uxPriority,		//任务优先级	范围0 ~ configMAX——PRIORITIES - 1
+								TaskHandle_t * const	pxCreatedTask)	//任务句柄(任务的标识)			//使用动态的方法创建一个任务
+					返回值
+					{
+						pdPASS:	任务创建成功
+						errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY:	任务创建失败，因为堆内存不足！
+					}
+				
+				xTaskCreateStatic(	TaskFunction_t 			pxTaskCode,
+									const char * const 		pcName,
+									const uint32_t 			ulStackDepth,
+									void * const 			pvParameters,
+									UBaseType_t 			uxPriority,
+									StackType_t * const 	puxStackBuffer,
+									StaticTask_t * const 	pxTaskBuffer)		//使用静态的方法创建一个任务
+									
+				//xTaskCreateRestricted();	//创建一个使用MPU进行限制的任务，相关内存使用动态内存分配(不用)
+				
+				vTaskDelete(TaskHandle_t xTaskToDelete)				//删除一个任务
+			}
+			
+			
+		}
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
