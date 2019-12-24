@@ -104,8 +104,11 @@ GIT版本控制系统
 								private	私有仓库作为内部团队协作管理的项目
 								
 							Settings
+								-> Delete this repository	删除仓库
+								-> Collaborators	设置协作开发人员
+							
+							Code	可以查看历史版本信息和分支信息
 						}
-	
 					}
 				}
 				
@@ -115,7 +118,7 @@ GIT版本控制系统
 					{
 						$git remote -v							//查看本地仓库和那些远程仓库保持连接
 						
-						$git remote add origin [GIT仓库地址]	//让本地仓库和远程仓库新建一个连接
+						$git remote add origin [GIT远程仓库地址]	//让本地仓库和远程仓库新建一个连接
 																//origin 是随便起的一个链接名字，可以改成自己想要的，不过一般都是用的这个
 						
 						$git remote rm origin					//删除关联信息
@@ -124,6 +127,25 @@ GIT版本控制系统
 						
 						$git push origin master					//把本地代码提交到远程仓库(需要输入GitHub的用户名密码)
 						
+						$git clone [GIT远程仓库地址] [别名：不设置默认为仓库名]		
+						{
+							/*
+							 * 	真实项目开发流程：
+							 *		1.组长或者负责人先创建好中央仓库，增加协作者
+							 *		2.小组成员基于 $git clone 把远程仓库及默认的内容克隆到本地一份
+							 *
+							 *	$git clone [GIT远程仓库地址] [别名：不设置默认为仓库名]
+							 *		解决了三件事情：
+							 *		{
+							 *			1、初始化一个本地仓库‘git init’
+							 *			2、和远程仓库保持了关联‘git remote add’
+							 *			3、把远程仓库默认内容拉取到本地‘git pull’
+							 *		}
+							 *		
+							 *		3.每个组员写完自己的程序后，基于‘git add / git commit’把自己修改的内容存放到历史区，然后通过
+							 *			‘git pull / git push’把本地信息和远程仓库保持同步即可(可能涉及冲突的处理)
+							 */
+						}
 					}
 					
 				}
